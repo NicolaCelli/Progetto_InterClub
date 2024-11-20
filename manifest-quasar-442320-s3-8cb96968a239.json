@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "manifest-quasar-442320-s3",
+  "private_key_id": "8cb96968a239dace943dd9e9334d1ba7b6e79ab7",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQDkq2TitajC5b49\n8lDKpEwncC6uEK00TLpHMYy/06COse8XT6O95UkQ59oryaW4+bmXq8gYE6pAr5t5\nf4b1O1Q7fzPW94Bt0xi3sXGK2MX/HYCd4dFoiV+jZ2tKO4R9aFoowj1no86SS834\nCVyJvE9OdsM5JYVoTuCOELAybM4NW3Gwd0Wliltvq2X1IoPEsW90sVjio+r2p3gc\n+1fOO8Z1kC4f8fLKGkpKvy+mrHgaOsS1NRdDHl9rjW5h9NLl0MHK5osNUy6F7Reb\nFIHugXT18KyQgHR56XTd3QhX28KHQ+NJ2mmgy0/psZyscLHI4yiv3mH/mI7vBzQZ\nkAcYEvYTAgMBAAECggEATJuvHNTHSSQ27AH2Vy1b5gqLWP11SYQ7FAbhpJJ9w9CQ\nzTp9HO1n4SYLzYes4Z+oMcv3KTnNXAZ5C+dRi27o9VXURDx+5kxGh6QG6gFds+5q\nXHp+8Yq0Y8YOB7yQ0oLXUbhhYgta9WA4DNT2D57q4tqe5NJRM3TZfj7RCNOy5H4P\n/H4VhdzZfa5JVE7gCsIBLitqm7Ia/S3Vb2Ibl5WDigGp312jervkIv0N2w2pVkdu\nctTVocDuMbVi9CjaCndQ/vd3T81NnaKmANVyjP5LYfHhPUj3p/XApjW38wTShCpm\nwWhdg7zW0YQq0PTT7XPoqWy5cHsffBFLIU/Zll0CAQKBgQD9HTzM2HmFIIva+ods\n+2wa2ptds3dVr0SxMHaE2i11GaUKpomrEcsTc5H81e6eyKHSROhBJr6XvsxI72tt\nTRpQfRsIerIRLnDevQPmf10VlZD1j7gswtQwcr8QQ0OhS/6YKMi5ij9x+PX0abFi\n8wP/iIa4V+twAS+9VMZRYI0DUwKBgQDnRs9dqG08axvqpr863ZTZqQDYQyCQz1QC\nO/Mu57r8D/oEim+pnD2BMhuy+jWE8zES91PfmE9dHwY15JIXt8Ibydk97dj4pkFG\nZhHfo14bX9icqXLrl8Wl2OCFSz7wS8Ukj6jnNr8L5hCJL60byTwKW0glL9rTwcJM\nn6D13bCqQQKBgG6XxsgOUdJcLR9p1aBFnq+BEt93Gc4jfZUaAr77gV8n7Ffh+kb3\nyE5gccoSQ2e3bBUurHhDEIXHBQVdLwgb50KB1zz2NzWQoBqCZeDhh2914VeaCzPr\nkMD2cgsOCM/CH6SmNUX0ZNJMoFLBl5MPcZDGO27yY1mV+yDzmI9X62UnAoGAVj2L\nWctSYHM4R7nCGTtDJB7nF72AST9mfibIubbjfNagTk0o8kA2lxSOS6ENj/P3WrEr\nb3cmMP0+nZ4L9Bgro50TCwrEG4QzVwL8qz4J+380EMcG+V7w7rT+k/XJFGXMr6N6\nQi2h89foVp+Wl4PkhaAgOO2tVcUspNHpfYUbOYECgYBiDpbHltB+fLsr5j5fB4Sd\nk1KBPmI8P2r1bMTVd7C64d0x4ozPRJt8A4P2ZNpeBHZOn3HYynJQSAXmY3ZuCc9o\nCkVhtISEMDw3BY7p6S+kWVoxWFgv+JMWlntL2HnA0YJy3baZaxy1Tyva/PSFhPoo\nGlR3hIKDkmEyySpRR82EwA==\n-----END PRIVATE KEY-----\n",
+  "client_email": "gestore-prenotazioni@manifest-quasar-442320-s3.iam.gserviceaccount.com",
+  "client_id": "104342966948612174271",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/gestore-prenotazioni%40manifest-quasar-442320-s3.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
