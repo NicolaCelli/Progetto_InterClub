@@ -9,7 +9,7 @@ def main():
     scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
     creds = ServiceAccountCredentials.from_json_keyfile_name('manifest-quasar-442320-s3-8cb96968a239.json', scope)
     client = gspread.authorize(creds)
-    sheet = client.open("Prenotazioni_Pullman").sheet1
+    sheet = client.open("Prenotazioni_Pullman").worksheet("Foglio1")
 
     # Aggiunta di stile personalizzato per la pagina
     st.markdown(
@@ -60,6 +60,7 @@ def main():
     # Input dell'utente
     nome = st.text_input("Nome").strip()
     cognome = st.text_input("Cognome").strip()
+    telefono = st.text_input("Numero di telefono (obbligatorio)").strip()
     citta_di_partenza = st.selectbox("Città di Partenza", ["Rimini Nord", "Forlì", "Faenza"])
     tipo_di_biglietto = st.selectbox("Tipo di Biglietto", ["Solo viaggio", "Viaggio e biglietto"])
 
@@ -87,6 +88,9 @@ def main():
     if not cognome:
         campi_completi = False
         errori.append("Il campo Cognome è obbligatorio.")
+    if not telefono:
+        campi_completi = False
+        errori.append("Il campo Numero di telefono è obbligatorio.")
     if tdt == "Sì":
         if not codice_tdt:
             campi_completi = False
@@ -118,10 +122,11 @@ def main():
                 data_di_nascita = data_di_nascita if data_di_nascita.strip() else "N/D"
 
                 # Aggiunge una nuova riga al foglio
-                sheet.append_row([nome, cognome, citta_di_partenza, tipo_di_biglietto, tdt, codice_tdt, data_di_nascita])
+                sheet.append_row([nome, cognome, citta_di_partenza, telefono, tipo_di_biglietto, tdt, codice_tdt, data_di_nascita])
                 st.success("Prenotazione registrata con successo!")
             except Exception as e:
                 st.error(f"Errore durante la registrazione: {e}")
 
 if __name__ == '__main__':
     main()
+
