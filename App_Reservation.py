@@ -45,6 +45,9 @@ def main():
         unsafe_allow_html=True
     )
 
+    # Aggiungi l'immagine sopra il titolo con dimensioni precise
+    st.image("logo_club.png", width=200)  # Dimensioni specifiche per l'immagine
+
     # Titolo dell'app
     st.markdown("<h1>Prenotazione Pullman - Inter Club Forlì</h1>", unsafe_allow_html=True)
 
@@ -61,10 +64,20 @@ def main():
     if socio_club == "No":
         st.markdown("<p class='warning'>⚠️ Non essendo socio, si applica una quota aggiuntiva di 20€.</p>", unsafe_allow_html=True)
 
+    # Nuova domanda: Hai abbonamento stadio?
+    abbonamento_stadio = st.radio("Hai abbonamento stadio?", ["Sì", "No"])
+
+    # Se ha l'abbonamento stadio, imposta tipo di biglietto in automatico e mostra avviso
+    if abbonamento_stadio == "Sì":
+        tipo_di_biglietto = "Solo viaggio"
+        st.markdown("<p class='warning'>⚠️ Hai l'abbonamento stadio: la quota sarà solo di 35€.</p>", unsafe_allow_html=True)
+    else:
+        # Selezione del tipo di biglietto
+        tipo_di_biglietto = st.selectbox("Tipo di Biglietto", ["Solo viaggio", "Viaggio e biglietto"])
+
     # Selezione della città di partenza
     citta_di_partenza = st.selectbox("Città di Partenza", ["Rimini Nord", "Forlì", "Faenza"])
     partita = st.selectbox("Partita", ["Inter Parma", "Inter Lipsia", "Inter Brasov"])
-    tipo_di_biglietto = st.selectbox("Tipo di Biglietto", ["Solo viaggio", "Viaggio e biglietto"])
 
     # Logica per tessera del tifoso
     tdt = "N/D"
