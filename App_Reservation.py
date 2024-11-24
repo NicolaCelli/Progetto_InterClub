@@ -11,43 +11,34 @@ def main():
     client = gspread.authorize(creds)
     sheet = client.open("Prenotazioni_Pullman").worksheet("Foglio1")
 
-    # Aggiunta di stile personalizzato per la pagina
+    # Stile personalizzato della pagina
     st.markdown(
         """
         <style>
-        /* Sfondo della pagina */
         body {
-            background-color: #000000;
-            color: #ffffff;
+            background-color: #101820; /* Blu notte moderno */
+            color: #F2F2F2; /* Testo chiaro per leggibilità */
         }
-        /* Barra laterale */
-        .css-18e3th9 {
-            background-color: #000000 !important;
-        }
-        /* Titolo principale */
         h1 {
             text-align: center;
-            color: #0074D9;
+            color: #0078FF; /* Blu moderno */
+            font-size: 3em;
+            font-family: 'Arial Black', Gadget, sans-serif;
         }
-        /* Testo nei campi input */
-        input {
-            background-color: #111111;
-            color: white !important;
-        }
-        /* Pulsanti */
-        .stButton>button {
-            background-color: #0074D9;
-            color: white;
-            border-radius: 8px;
+        .footer {
+            text-align: center;
+            margin-top: 30px;
             padding: 10px;
+            background-color: #1E1E1E;
+            color: #CCCCCC;
+            border-radius: 10px;
+            font-size: 1.2em;
         }
-        .stButton>button:hover {
-            background-color: #005bb5;
-            color: white;
-        }
-        /* Intestazioni */
-        .stRadio label, .stSelectbox label {
-            color: #ffffff;
+        .warning {
+            color: #FFCC00;
+            font-size: 1em;
+            font-weight: bold;
+            margin-top: 10px;
         }
         </style>
         """,
@@ -58,75 +49,84 @@ def main():
     st.markdown("<h1>Prenotazione Pullman - Inter Club Forlì</h1>", unsafe_allow_html=True)
 
     # Input dell'utente
-    nome = st.text_input("Nome").strip()
-    cognome = st.text_input("Cognome").strip()
-    telefono = st.text_input("Numero di telefono (obbligatorio)").strip()
+    st.subheader("Compila i campi per prenotare il tuo posto:")
+    nome = st.text_input("Nome", placeholder="Inserisci il tuo nome").strip()
+    cognome = st.text_input("Cognome", placeholder="Inserisci il tuo cognome").strip()
+    telefono = st.text_input("Numero di telefono (obbligatorio)", placeholder="Es. 3331234567").strip()
+
+    # Nuova opzione: Sei socio del club?
+    socio_club = st.radio("Sei socio del club?", ["Sì", "No"])
+
+    # Messaggio se non si è soci
+    if socio_club == "No":
+        st.markdown("<p class='warning'>⚠️ Non essendo socio, si applica una quota aggiuntiva di 20€.</p>", unsafe_allow_html=True)
+
+    # Selezione della città di partenza
     citta_di_partenza = st.selectbox("Città di Partenza", ["Rimini Nord", "Forlì", "Faenza"])
+    partita = st.selectbox("Partita", ["Inter Parma", "Inter Lipsia", "Inter Brasov"])
     tipo_di_biglietto = st.selectbox("Tipo di Biglietto", ["Solo viaggio", "Viaggio e biglietto"])
 
-    # Logica per la tessera del tifoso
+    # Logica per tessera del tifoso
     tdt = "N/D"
-    codice_tdt = "N/D"  # Nuova colonna per il codice TDT
+    numero_tdt = "007"  # Prefisso fisso "007"
     data_di_nascita = "N/D"
+    
     if tipo_di_biglietto == "Viaggio e biglietto":
         tdt_risposta = st.radio("Hai la tessera del tifoso?", ["Sì", "No"])
         if tdt_risposta == "Sì":
             tdt = "Sì"
-            codice_tdt = st.text_input("Inserisci il codice della tua tessera del tifoso").strip()
-            data_di_nascita = st.text_input("Inserisci la tua data di nascita (formato: GG/MM/AAAA)").strip()
+            # Campo per inserire solo i restanti 9 caratteri (incluso il prefisso fisso "007")
+            numero_tdt_inserito = st.text_input("Numero tessera del tifoso (inizia con 007)", value="007", max_chars=12)
+            
+            # Validazione per assicurarci che l'utente inserisca un totale di 12 caratteri (3 prefisso + 9 alfanumerici)
+            if len(numero_tdt_inserito) == 12 and numero_tdt_inserito[:3] == "007" and numero_tdt_inserito[3:].isalnum():
+                numero_tdt = numero_tdt_inserito
+            else:
+                st.warning("⚠️ Il numero della tessera del tifoso deve essere composto da 12 caratteri, di cui i primi 3 devono essere '007' seguiti da 9 caratteri alfanumerici.")
+                
+            data_di_nascita = st.text_input("Data di nascita (GG/MM/AAAA)", placeholder="Es. 01/01/2000").strip()
         else:
             tdt = "No"
+            numero_tdt = "N/D"  # Se non ha la tessera, il numero della tessera deve essere N/D
+            data_di_nascita = "N/D"  # Se non ha la tessera, la data di nascita deve essere N/D
 
-    # Messaggio iniziale
-    campi_completi = True
+    # Convalida campi obbligatori
     errori = []
-
-    # Convalida dei campi obbligatori
     if not nome:
-        campi_completi = False
-        errori.append("Il campo Nome è obbligatorio.")
+        errori.append("⚠️ Il campo Nome è obbligatorio.")
     if not cognome:
-        campi_completi = False
-        errori.append("Il campo Cognome è obbligatorio.")
+        errori.append("⚠️ Il campo Cognome è obbligatorio.")
     if not telefono:
-        campi_completi = False
-        errori.append("Il campo Numero di telefono è obbligatorio.")
-    if tdt == "Sì":
-        if not codice_tdt:
-            campi_completi = False
-            errori.append("Inserisci il codice della tessera del tifoso.")
-        if not data_di_nascita:
-            campi_completi = False
-            errori.append("Inserisci la data di nascita.")
-        else:
-            try:
-                datetime.strptime(data_di_nascita, "%d/%m/%Y")
-            except ValueError:
-                campi_completi = False
-                errori.append("La data di nascita non è in un formato valido (GG/MM/AAAA).")
+        errori.append("⚠️ Il campo Numero di telefono è obbligatorio.")
+    if tdt == "Sì" and (len(numero_tdt) != 12 or not numero_tdt.startswith("007") or not numero_tdt[3:].isalnum()):
+        errori.append("⚠️ Il numero della tessera del tifoso deve essere composto da 12 caratteri, di cui i primi 3 devono essere '007' seguiti da 9 caratteri alfanumerici.")
+    if tdt == "Sì" and (not data_di_nascita):
+        errori.append("⚠️ Data di nascita è obbligatoria se hai la tessera del tifoso.")
 
-    # Mostra errori se ci sono
-    if not campi_completi:
-        st.warning("Compilare tutti i campi obbligatori prima di poter confermare la tua prenotazione e controllare che siano corretti.")
+    # Mostra errori
+    if errori:
+        st.markdown("<p class='error'>Correggi i seguenti errori:</p>", unsafe_allow_html=True)
         for errore in errori:
-            st.error(errore)
+            st.write(errore)
     else:
-        # Pulsante di conferma disponibile solo se tutti i campi sono completi
+        # Pulsante di conferma
         if st.button("Conferma Prenotazione"):
             try:
-                # Sostituisci i campi vuoti con "N/D"
-                citta_di_partenza = citta_di_partenza if citta_di_partenza.strip() else "N/D"
-                tipo_di_biglietto = tipo_di_biglietto if tipo_di_biglietto.strip() else "N/D"
-                tdt = tdt if tdt.strip() else "N/D"
-                codice_tdt = codice_tdt if codice_tdt.strip() else "N/D"
-                data_di_nascita = data_di_nascita if data_di_nascita.strip() else "N/D"
-
-                # Aggiunge una nuova riga al foglio
-                sheet.append_row([nome, cognome, citta_di_partenza, telefono, tipo_di_biglietto, tdt, codice_tdt, data_di_nascita])
-                st.success("Prenotazione registrata con successo!")
+                sheet.append_row([nome, cognome, socio_club, citta_di_partenza, telefono, tipo_di_biglietto, tdt, numero_tdt, data_di_nascita])
+                st.success("✅ Prenotazione registrata con successo!")
             except Exception as e:
-                st.error(f"Errore durante la registrazione: {e}")
+                st.error(f"❌ Errore durante la registrazione: {e}")
+
+    # Footer con i recapiti
+    st.markdown(
+        """
+        <div class="footer">
+            <p>Per ulteriori informazioni, contatta:</p>
+            <p>📞 Filippo: <a href="tel:+393801770771" style="color: #0078FF;">380 177 0771</a></p>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
 
 if __name__ == '__main__':
     main()
-
